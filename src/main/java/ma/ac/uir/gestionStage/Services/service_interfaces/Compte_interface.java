@@ -18,7 +18,5 @@ public interface Compte_interface {
 
     void deleteAllComptes();
 
-   // CompteDto login(String email, String password);
-
 
 }

@@ -1,13 +1,10 @@
 package ma.ac.uir.gestionStage.Controllers;
 
 import ma.ac.uir.gestionStage.DTO.CompteDto;
-import ma.ac.uir.gestionStage.Entities.Compte;
 import ma.ac.uir.gestionStage.Services.service_impl.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,35 +27,12 @@ public class Compte_controller {
     return new ResponseEntity<>(compteDto, HttpStatus.CREATED);
     }
 
-    // handler method to handle register user form submit request
-    @PostMapping("/register/save")
-    public String registration(@Valid @ModelAttribute("compteDto") CompteDto compteDto,
-                               BindingResult result,
-                               Model model){
-/*        CompteDto existing = compteService.findByEmail(compteDto.getEmail());     //findbyEmail cannot be null error
-        if (existing != null) {
-            result.rejectValue("email", null, "There is already an account registered with that email");
-        }*/
-        if (result.hasErrors()) {
-            model.addAttribute("compte", compteDto);
-            return "register";
-        }
-        compteService.saveCompte(compteDto);
-        return "redirect:/register?success";
-    }
-    @CrossOrigin(origins="*")
-    @GetMapping("/find/All")
-    public String listRegisteredUsers(Model model){
-        List<CompteDto> comptes = compteService.findAllCompte();
-        model.addAttribute("comptes", comptes);
-        return "comptes";
-    }
 ////////////////////
-   /* @CrossOrigin(origins="*")
+    @CrossOrigin(origins="*")
     @GetMapping(value = "/find/All")
     public ResponseEntity<List<CompteDto>> recupererAllComptes() {
         return new ResponseEntity<>(compteService.findAllCompte(), HttpStatus.OK);
-    }*/
+    }
     @CrossOrigin(origins="*")
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<CompteDto> recupererCompteParId(@PathVariable int id) {

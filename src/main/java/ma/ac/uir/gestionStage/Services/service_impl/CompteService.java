@@ -9,7 +9,7 @@ import ma.ac.uir.gestionStage.Entities.Role;
 import ma.ac.uir.gestionStage.Services.service_interfaces.Compte_interface;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +26,7 @@ public class CompteService implements Compte_interface {
     private CompteRepository compteRepository;
     private RoleRepository roleRepository;
     private ModelMapper modelMapper;
-    private PasswordEncoder passwordEncoder;
+    //private PasswordEncoder passwordEncoder;
     @Transactional
     public CompteDto saveCompte(CompteDto compteDto) {            //CREATE
         Compte compte = new Compte();
@@ -34,22 +34,11 @@ public class CompteService implements Compte_interface {
         compte.setNom(compteDto.getNom());
         compte.setPrenom(compteDto.getPrenom());
         compte.setEmail(compteDto.getEmail());
-        compte.setPassword(passwordEncoder.encode(compteDto.getPassword()));
-        //compte.setTypeCompte(compteDto.getTypeCompte());
-        Role role = roleRepository.findByName("ROLE_ADMIN");
-        if(role == null){
-            role = checkRoleExist();
-        }
-        compte.setRoles(Arrays.asList(role));
+       // compte.setPassword(passwordEncoder.encode(compteDto.getPassword()));
+        compte.setPassword(compteDto.getPassword());
         Compte saved = compteRepository.save(compte);
         return modelMapper.map(saved, CompteDto.class);
     }
-    private Role checkRoleExist() {
-        Role role = new Role();
-        role.setName("ROLE_ADMIN");
-        return roleRepository.save(role);
-    }
-
     @Transactional
     @Override
     public CompteDto updateCompte(CompteDto compteDto, int id) {            //UPDATE

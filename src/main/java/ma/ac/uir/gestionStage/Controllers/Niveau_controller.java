@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+import javax.validation.Path;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -37,13 +39,18 @@ public class Niveau_controller {
     @CrossOrigin(origins="*")
     @GetMapping(value = "/findNiveau/{id}")
     public ResponseEntity<NiveauDto> recupererNiveauParId(@PathVariable int id) {
-        NiveauDto niveauDto = niveauService.findNiveauById(id);
-        return ResponseEntity.ok(niveauDto);
+        try {
+            NiveauDto niveauDto = niveauService.findNiveauById(id);
+            return ResponseEntity.ok(niveauDto);
+        }catch (EntityNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
     ////////////////////////////
     @CrossOrigin(origins="*")
     @DeleteMapping(value = "/deleteNiveau/{id}")
-    public String supprimerNiveau(Integer id) {
+    public String supprimerNiveau(@PathVariable int id) {
         niveauService.deleteNiveau(id);
         return "Niveau supprimé avec succes!";
     }
@@ -55,7 +62,7 @@ public class Niveau_controller {
     }
     @CrossOrigin(origins="*")
     @PutMapping(value= "/updateNiveau/{id}")
-    public ResponseEntity<NiveauDto> modifierNiveau(@Valid @RequestBody() NiveauDto niveauDto, @PathVariable() int id) {
+    public ResponseEntity<NiveauDto> modifierNiveau(@Valid @RequestBody() NiveauDto niveauDto, @PathVariable int id) {
         niveauDto = niveauService.updateNiveau(niveauDto, id);
         return ResponseEntity.accepted().body(niveauDto);
     }

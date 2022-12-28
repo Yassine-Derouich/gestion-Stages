@@ -1,4 +1,4 @@
-package ma.ac.uir.gestionStage.Security;
+/*package ma.ac.uir.gestionStage.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,45 +11,44 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-@Configuration
+onfiguration
 @EnableWebSecurity
 public class SpringSecurity {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+ @Autowired
+ private UserDetailsService userDetailsService;
 
-    @Bean
-    public static PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+ @Bean
+ public static PasswordEncoder passwordEncoder(){
+     return new BCryptPasswordEncoder();
+ }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/register/**").permitAll()
-                .antMatchers("/index").permitAll()
-                .antMatchers("/compte").hasRole("ADMIN")
-                .and().
-                formLogin(
-                        form -> form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/users")
-                                .permitAll()
-                ).logout(
-                        logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .permitAll()
-                );
-        return http.build();
-    }
+@Bean
+ *public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+      http.csrf().disable()
+              .authorizeRequests()
+              .antMatchers("/save/**").permitAll()
+              .antMatchers("/compte").hasRole("ADMIN")
+              .and().
+              formLogin(
+                      form -> form
+                              .loginPage("/login")
+                              .loginProcessingUrl("/login")
+                              .defaultSuccessUrl("/users")
+                              .permitAll()
+              ).logout(
+                      logout -> logout
+                              .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                              .permitAll()
+              );
+      return http.build();
+  }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
+ @Autowired
+ public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+     auth
+             .userDetailsService(userDetailsService)
+             .passwordEncoder(passwordEncoder());
+ }
 }
+*/

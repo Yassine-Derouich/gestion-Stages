@@ -1,4 +1,4 @@
-package ma.ac.uir.gestionStage.Services.service_impl;
+/*package ma.ac.uir.gestionStage.Services.service_impl;
 
 import lombok.AllArgsConstructor;
 import ma.ac.uir.gestionStage.DAO.CompteRepository;
@@ -40,4 +40,4 @@ public class CustomUserDetailsService implements UserDetailsService {
         return mapRoles;
     }
 }
-
+*/
