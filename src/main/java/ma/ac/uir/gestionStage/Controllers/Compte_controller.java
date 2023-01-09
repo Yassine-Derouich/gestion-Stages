@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/compte")
+@RequestMapping("/Compte")
 public class Compte_controller {
     @Autowired
     private CompteService compteService;

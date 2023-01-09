@@ -22,38 +22,38 @@ public class Etablissement_controller {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping(value = "/save/Etablissement")
+    @PostMapping(value = "/save")
     public ResponseEntity<EtablissementDto> creerEtablissement(@RequestBody EtablissementDto etablissementDto) {
        etablissementDto = etablissementService.saveEtablissement(etablissementDto);
         return new ResponseEntity<>(etablissementDto, HttpStatus.CREATED);
     }
 
     @CrossOrigin(origins="*")
-    @GetMapping(value = "/find/AllEtablissements")
+    @GetMapping(value = "/find/All")
     public ResponseEntity<List<EtablissementDto>> recupererAllEtablissement() {
         return new ResponseEntity<>(etablissementService.findAllEtablissement(), HttpStatus.OK);
     }
 
     @CrossOrigin(origins="*")
-    @GetMapping(value = "/find/Etablissement/{id}")
+    @GetMapping(value = "/find/{id}")
     public ResponseEntity<EtablissementDto> recupererEtablissementParId(@PathVariable int id) {
         EtablissementDto etablissementDto = etablissementService.findEtablissementById(id);
         return ResponseEntity.ok(etablissementDto);
     }
     @CrossOrigin(origins="*")
-    @DeleteMapping(value = "/delete/Etablissement/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public String supprimerEtablissement(int id) {
         etablissementService.deleteEtablissement(id);
         return "Etablissement supprimé avec succes!";
     }
     @CrossOrigin(origins="*")
-    @DeleteMapping(value = "/delete/AllEtablissement")
+    @DeleteMapping(value = "/delete/All")
     public String supprimerEtablissementx(){
        etablissementService.deleteAllEtablissement();
         return "Etablissements supprimés avec succès !";
     }
     @CrossOrigin(origins="*")
-    @PutMapping(value= "/updateEtablissement/{id}")
+    @PutMapping(value= "/update/{id}")
     public ResponseEntity<EtablissementDto> modifierEtablissement(@Valid @RequestBody() EtablissementDto etablissementDto, @PathVariable() int id) {
         etablissementDto = etablissementService.updateEtablissement(etablissementDto, id);
         return ResponseEntity.accepted().body(etablissementDto);
