@@ -55,7 +55,7 @@ public class Niveau_controller {
         return "Niveau supprimé avec succes!";
     }
     @CrossOrigin(origins="*")
-    @DeleteMapping(value = "/delete/All")
+    @DeleteMapping(value = "/delete/all")
     public String supprimerNiveaux(){
         niveauService.deleteAllNiveaux();
         return "Niveaux supprimés avec succès !";
