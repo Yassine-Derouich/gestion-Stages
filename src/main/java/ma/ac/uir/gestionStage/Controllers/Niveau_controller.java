@@ -1,7 +1,6 @@
 package ma.ac.uir.gestionStage.Controllers;
 
 
-import ma.ac.uir.gestionStage.DTO.EtablissementDto;
 import ma.ac.uir.gestionStage.DTO.NiveauDto;
 import ma.ac.uir.gestionStage.Services.service_impl.NiveauService;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.Path;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -29,7 +27,12 @@ public class Niveau_controller {
         niveauDto = niveauService.saveNiveau(niveauDto);
         return new ResponseEntity<>(niveauDto, HttpStatus.CREATED);
     }
-
+    @CrossOrigin(origins="*")
+    @PutMapping(value= "/update/{id}")
+    public ResponseEntity<NiveauDto> modifierNiveau(@Valid @RequestBody() NiveauDto niveauDto, @PathVariable int id) {
+        niveauDto = niveauService.updateNiveau(niveauDto, id);
+        return ResponseEntity.accepted().body(niveauDto);
+    }
     @CrossOrigin(origins="*")
     @GetMapping(value = "/find/All")
     public ResponseEntity<List<NiveauDto>> recupererAllNiveaux() {
@@ -50,20 +53,24 @@ public class Niveau_controller {
     ////////////////////////////
     @CrossOrigin(origins="*")
     @DeleteMapping(value = "/delete/{id}")
-    public String supprimerNiveau(@PathVariable int id) {
-        niveauService.deleteNiveau(id);
-        return "Niveau supprimé avec succes!";
+    public ResponseEntity<NiveauDto> supprimerNiveau(@PathVariable int id){
+        try {
+            NiveauDto niveauDto = (niveauService.deleteNiveau(id));
+            return ResponseEntity.ok(niveauDto);
+        }catch (EntityNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
     @CrossOrigin(origins="*")
     @DeleteMapping(value = "/delete/all")
-    public String supprimerNiveaux(){
-        niveauService.deleteAllNiveaux();
-        return "Niveaux supprimés avec succès !";
-    }
-    @CrossOrigin(origins="*")
-    @PutMapping(value= "/update/{id}")
-    public ResponseEntity<NiveauDto> modifierNiveau(@Valid @RequestBody() NiveauDto niveauDto, @PathVariable int id) {
-        niveauDto = niveauService.updateNiveau(niveauDto, id);
-        return ResponseEntity.accepted().body(niveauDto);
+    public ResponseEntity<NiveauDto> supprimerNiveaux() {
+        try {
+            NiveauDto niveauDto = (niveauService.deleteAllNiveaux());
+            return ResponseEntity.ok(niveauDto);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

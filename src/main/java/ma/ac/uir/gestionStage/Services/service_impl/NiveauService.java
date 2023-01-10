@@ -38,7 +38,6 @@ public class NiveauService implements Niveau_interface {
     @Transactional
     @Override
     public NiveauDto updateNiveau(NiveauDto niveauDto, int id) {            //UPDATE
-
         Optional<Niveau> niveauOptional = niveauRepository.findById(id);
         if (niveauOptional != null) {
             Niveau niveau = modelMapper.map(niveauDto, Niveau.class);
@@ -68,13 +67,33 @@ public class NiveauService implements Niveau_interface {
 
     @Transactional
     @Override
-    public void deleteNiveau(int id) {          //DELETE ID
-        niveauRepository.deleteById(id);
+    public NiveauDto deleteNiveau(int id){
+        Optional<Niveau> niveau = niveauRepository.findById(id);
+        if(!niveau.isPresent()){
+            throw new EntityNotFoundException("Niveau not found");
+        }
+        else {
+            niveauRepository.deleteById(id);
+            return modelMapper.map(niveau, NiveauDto.class);
+        }
     }
     @Transactional
     @Override
-    public void deleteAllNiveaux() {            //DELETE ALL
+   /* public void deleteAllNiveaux() {            //DELETE ALL
         niveauRepository.deleteAll();
+    }*/
+    public NiveauDto deleteAllNiveaux(){
+        List<Niveau> niveau = niveauRepository.findAll();
+        if(niveau.isEmpty()){
+            throw new EntityNotFoundException("Niveaux not found");
+        }
+        else {
+            niveauRepository.deleteAll();
+            return modelMapper.map(niveau, NiveauDto.class);
+        }
     }
+
+
+
 
 }

@@ -11,9 +11,9 @@ public class CompteDto {
     @NotEmpty(message = "Ce champ est requis")
     private String prenom;
     @NotEmpty(message = "Ce champ est requis")
-    private String password;
-    @NotEmpty(message = "Ce champ est requis")
     private String email;
+    @NotEmpty(message = "Ce champ est requis")
+    private String password;
     // private String typeCompte;
     public CompteDto() {
     }

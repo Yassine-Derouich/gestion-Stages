@@ -14,7 +14,7 @@ public interface Niveau_interface {
 
     List<NiveauDto> findAllNiveaux();
 
-    void deleteNiveau(int id);
-
-    void deleteAllNiveaux();
+    //void deleteNiveau(int id);
+    NiveauDto deleteNiveau(int id);
+    NiveauDto deleteAllNiveaux();
 }
