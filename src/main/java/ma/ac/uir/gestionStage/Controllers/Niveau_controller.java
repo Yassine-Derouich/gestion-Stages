@@ -2,7 +2,7 @@ package ma.ac.uir.gestionStage.Controllers;
 
 
 import ma.ac.uir.gestionStage.DTO.NiveauDto;
-import ma.ac.uir.gestionStage.Services.service_impl.NiveauService;
+import ma.ac.uir.gestionStage.Services.NiveauService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("Niveau")
+@RequestMapping("niveau")
 public class Niveau_controller {
 
     private NiveauService niveauService;
@@ -23,13 +23,13 @@ public class Niveau_controller {
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/save")
-    public ResponseEntity<NiveauDto> creerNiveau(@Valid @RequestBody NiveauDto niveauDto) {
-        niveauDto = niveauService.saveNiveau(niveauDto);
-        return new ResponseEntity<>(niveauDto, HttpStatus.CREATED);
+    public void creerNiveau(@RequestBody NiveauDto niveauDto) {
+        niveauService.saveNiveau(niveauDto);
     }
+
     @CrossOrigin(origins="*")
     @PutMapping(value= "/update/{id}")
-    public ResponseEntity<NiveauDto> modifierNiveau(@Valid @RequestBody() NiveauDto niveauDto, @PathVariable int id) {
+    public ResponseEntity<NiveauDto> modifierNiveau(@Valid @RequestBody() NiveauDto niveauDto, @PathVariable() int id) {
         niveauDto = niveauService.updateNiveau(niveauDto, id);
         return ResponseEntity.accepted().body(niveauDto);
     }
@@ -42,13 +42,8 @@ public class Niveau_controller {
     @CrossOrigin(origins="*")
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<NiveauDto> recupererNiveauParId(@PathVariable int id) {
-        try {
-            NiveauDto niveauDto = niveauService.findNiveauById(id);
-            return ResponseEntity.ok(niveauDto);
-        }catch (EntityNotFoundException e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        NiveauDto niveauDto = niveauService.findNiveauById(id);
+        return ResponseEntity.ok(niveauDto);
     }
     ////////////////////////////
     @CrossOrigin(origins="*")
@@ -73,4 +68,5 @@ public class Niveau_controller {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 }

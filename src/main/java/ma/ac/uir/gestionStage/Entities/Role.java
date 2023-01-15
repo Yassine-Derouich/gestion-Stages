@@ -1,24 +1,44 @@
 package ma.ac.uir.gestionStage.Entities;
 
-import lombok.*;
-
 import javax.persistence.*;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name="roles")
-public class Role
-{
+@Table(name = "role")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable=false, unique=true)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy="roles")
-    private List<Compte> comptes;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+    @OneToMany(mappedBy= "role",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Etudiant> listEtudiants;
+    @OneToMany(mappedBy= "role",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ResponsableStage> responsableStageList;
 }
+

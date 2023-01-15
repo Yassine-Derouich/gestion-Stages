@@ -9,11 +9,10 @@ public class NiveauDto {
     public NiveauDto() {
     }
 
-    public NiveauDto(int idNiveau, String niveau, String nomFiliere) {
+    public NiveauDto(int idNiveau, String nomFiliere, String niveau) {
         this.idNiveau = idNiveau;
-        this.niveau = niveau;
         this.nomFiliere = nomFiliere;
-
+        this.niveau = niveau;
     }
 
     public int getIdNiveau() {

@@ -19,4 +19,8 @@ public class Etablissement {
 
     @Column(name = "description")
     private String description;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "responsable_id",nullable = false)
+    private ResponsableStage responsableStage;
 }

@@ -1,7 +1,7 @@
 package ma.ac.uir.gestionStage.Controllers;
 
 import ma.ac.uir.gestionStage.DTO.CompteDto;
-import ma.ac.uir.gestionStage.Services.service_impl.CompteService;
+import ma.ac.uir.gestionStage.Services.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NiveauRepository extends JpaRepository<Niveau,Integer> {
-
 }

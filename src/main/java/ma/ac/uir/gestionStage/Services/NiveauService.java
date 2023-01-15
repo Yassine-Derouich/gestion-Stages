@@ -1,11 +1,9 @@
-package ma.ac.uir.gestionStage.Services.service_impl;
+package ma.ac.uir.gestionStage.Services;
 
 import ma.ac.uir.gestionStage.DAO.NiveauRepository;
 import ma.ac.uir.gestionStage.DTO.NiveauDto;
 import ma.ac.uir.gestionStage.Entities.Niveau;
-import ma.ac.uir.gestionStage.Services.service_interfaces.Niveau_interface;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class NiveauService implements Niveau_interface {
+public class NiveauService {
 
     private static NiveauRepository niveauRepository;
     private static ModelMapper modelMapper;
@@ -36,7 +34,7 @@ public class NiveauService implements Niveau_interface {
     }
 
     @Transactional
-    @Override
+    
     public NiveauDto updateNiveau(NiveauDto niveauDto, int id) {            //UPDATE
         Optional<Niveau> niveauOptional = niveauRepository.findById(id);
         if (niveauOptional != null) {
@@ -51,14 +49,13 @@ public class NiveauService implements Niveau_interface {
     }
 
     @Transactional
-    @Override
+    
     public NiveauDto findNiveauById(int id) {       //GET ID
         Niveau niveau= niveauRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Niveau introuvable !!"));
         System.out.println("niveau: "+niveau);
         return modelMapper.map(niveau,NiveauDto.class);    }
 
     @Transactional(readOnly = true)
-    @Override
     public List<NiveauDto> findAllNiveaux() {            //GET ALL
         return niveauRepository.findAll()
                 .stream().map(element -> modelMapper.map(element, NiveauDto.class))
@@ -66,7 +63,6 @@ public class NiveauService implements Niveau_interface {
     }
 
     @Transactional
-    @Override
     public NiveauDto deleteNiveau(int id){
         Optional<Niveau> niveau = niveauRepository.findById(id);
         if(!niveau.isPresent()){
@@ -78,10 +74,6 @@ public class NiveauService implements Niveau_interface {
         }
     }
     @Transactional
-    @Override
-   /* public void deleteAllNiveaux() {            //DELETE ALL
-        niveauRepository.deleteAll();
-    }*/
     public NiveauDto deleteAllNiveaux(){
         List<Niveau> niveau = niveauRepository.findAll();
         if(niveau.isEmpty()){

@@ -1,4 +1,4 @@
-package ma.ac.uir.gestionStage.Services.service_impl;
+package ma.ac.uir.gestionStage.Services;
 
 import lombok.AllArgsConstructor;
 import ma.ac.uir.gestionStage.DAO.CompteRepository;
