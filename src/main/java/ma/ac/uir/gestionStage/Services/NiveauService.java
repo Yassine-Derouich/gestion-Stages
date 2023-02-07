@@ -1,9 +1,11 @@
 package ma.ac.uir.gestionStage.Services;
 
+import lombok.Data;
 import ma.ac.uir.gestionStage.DAO.NiveauRepository;
 import ma.ac.uir.gestionStage.DTO.NiveauDto;
 import ma.ac.uir.gestionStage.Entities.Niveau;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,29 +17,23 @@ import java.util.stream.Collectors;
 @Service
 public class NiveauService {
 
-    private static NiveauRepository niveauRepository;
-    private static ModelMapper modelMapper;
-
-    public NiveauService(NiveauRepository niveauRepository, ModelMapper modelMapper) {
-        this.niveauRepository = niveauRepository;
-        this.modelMapper = modelMapper;
-    }
+    @Autowired private NiveauRepository niveauRepository;
+    @Autowired private ModelMapper modelMapper;
 
     @Transactional
     public NiveauDto saveNiveau(NiveauDto niveauDto){            //CREATE
         Niveau niveau = new Niveau();
         niveau.setIdNiveau(niveauDto.getIdNiveau());
         niveau.setNomFiliere(niveauDto.getNomFiliere());
-        niveau.setNiveau(niveauDto.getNiveau());
-        Niveau saved = niveauRepository.save(niveau);
-        return modelMapper.map(saved, NiveauDto.class);
+        niveau.setNBniveau(niveauDto.getNBniveau());
+        niveau = niveauRepository.save(niveau);
+        return modelMapper.map(niveau, NiveauDto.class);
     }
 
     @Transactional
-    
     public NiveauDto updateNiveau(NiveauDto niveauDto, int id) {            //UPDATE
         Optional<Niveau> niveauOptional = niveauRepository.findById(id);
-        if (niveauOptional != null) {
+        if (niveauOptional.isPresent()) {
             Niveau niveau = modelMapper.map(niveauDto, Niveau.class);
             niveau.setIdNiveau(id);
             Niveau updated = niveauRepository.save(niveau);
@@ -49,17 +45,20 @@ public class NiveauService {
     }
 
     @Transactional
-    
-    public NiveauDto findNiveauById(int id) {       //GET ID
+    public NiveauDto findNiveauById(int id) {//GET ID
         Niveau niveau= niveauRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Niveau introuvable !!"));
-        System.out.println("niveau: "+niveau);
         return modelMapper.map(niveau,NiveauDto.class);    }
 
     @Transactional(readOnly = true)
     public List<NiveauDto> findAllNiveaux() {            //GET ALL
-        return niveauRepository.findAll()
-                .stream().map(element -> modelMapper.map(element, NiveauDto.class))
-                .collect(Collectors.toList());
+        List<Niveau> niveau = niveauRepository.findAll();
+        if(niveau.isEmpty()){
+            throw new EntityNotFoundException("Liste des niveaux est vide!");
+        }else {
+            return niveauRepository.findAll()
+                    .stream().map(element -> modelMapper.map(element, NiveauDto.class))
+                    .collect(Collectors.toList());
+        }
     }
 
     @Transactional

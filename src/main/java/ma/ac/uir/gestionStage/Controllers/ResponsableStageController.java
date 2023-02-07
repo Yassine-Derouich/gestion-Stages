@@ -29,8 +29,12 @@ public class ResponsableStageController {
     public ResponseEntity<ResponsableStageDto> saveRespo(@RequestBody ResponsableStageDto responsableStageDto){
         return new ResponseEntity<>(responsableStageService.saveRESPO(responsableStageDto), HttpStatus.OK);
     }
-
-    @PutMapping(value= "/update/{id}")
+    @CrossOrigin(origins = "*")
+    @PostMapping("/Login/{email}/{password}")
+    public ResponseEntity<ResponsableStageDto> LoginRespo(@PathVariable String email, @PathVariable String password){
+        return new ResponseEntity<>(responsableStageService.RespoLogin(email,password),HttpStatus.ACCEPTED);
+    }
+    @PatchMapping(value= "/update/{id}")
     public ResponseEntity<ResponsableStageDto> modifierRespo(@Valid @RequestBody() ResponsableStageDto responsableStageDto, @PathVariable() int id) {
         responsableStageDto = responsableStageService.updateResponsableStage(responsableStageDto, id);
         return ResponseEntity.accepted().body(responsableStageDto);
@@ -42,19 +46,20 @@ public class ResponsableStageController {
     }
     @CrossOrigin(origins="*")
     @GetMapping(value = "/find/All")
-    public ResponseEntity<List<ResponsableStageDto>> recupererAllRespo() {
-        return new ResponseEntity<>(responsableStageService.findAllResponsableStages(), HttpStatus.OK);
+    public ResponseEntity<List<ResponsableStageDto>> FindAllRespo() {
+        try {
+            return new ResponseEntity<>(responsableStageService.findAllResponsableStages(), HttpStatus.OK);
+        }catch (javax.persistence.EntityNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @CrossOrigin(origins = "*")
-    @PostMapping("/Login/{email}/{password}")
-    public ResponseEntity<ResponsableStageDto> loginProf(@PathVariable String email, @PathVariable String password){
-        return new ResponseEntity<>(responsableStageService.RespoLogin(email,password),HttpStatus.ACCEPTED);
-    }
+
 
     @CrossOrigin(origins="*")
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<ResponsableStageDto> supprimerResponsableStage(@PathVariable Integer id) {
+    public ResponseEntity<ResponsableStageDto> supprimerResponsableStage(@PathVariable int id) {
         try {
             ResponsableStageDto responsableStageDto = responsableStageService.deleteResponsableStage(id);
             return ResponseEntity.ok(responsableStageDto);

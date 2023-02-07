@@ -12,21 +12,19 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("niveau")
+@RequestMapping("Niveau")
 public class Niveau_controller {
 
     private NiveauService niveauService;
-
     public Niveau_controller(NiveauService niveauService){
         this.niveauService=niveauService;
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/save")
-    public void creerNiveau(@RequestBody NiveauDto niveauDto) {
-        niveauService.saveNiveau(niveauDto);
+    public ResponseEntity<NiveauDto> creerNiveau(@Valid @RequestBody() NiveauDto niveauDto) {
+        return new ResponseEntity<>(niveauService.saveNiveau(niveauDto),HttpStatus.OK);
     }
-
     @CrossOrigin(origins="*")
     @PutMapping(value= "/update/{id}")
     public ResponseEntity<NiveauDto> modifierNiveau(@Valid @RequestBody() NiveauDto niveauDto, @PathVariable() int id) {
@@ -36,7 +34,12 @@ public class Niveau_controller {
     @CrossOrigin(origins="*")
     @GetMapping(value = "/find/All")
     public ResponseEntity<List<NiveauDto>> recupererAllNiveaux() {
-        return new ResponseEntity<>(niveauService.findAllNiveaux(), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(niveauService.findAllNiveaux(), HttpStatus.OK);
+        }catch(EntityNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @CrossOrigin(origins="*")

@@ -1,14 +1,10 @@
 package ma.ac.uir.gestionStage.Services;
 
+import lombok.Data;
 import ma.ac.uir.gestionStage.DAO.ResponsableStageRepository;
-import ma.ac.uir.gestionStage.DAO.RoleRepository;
 import ma.ac.uir.gestionStage.DTO.EtudiantDto;
-import ma.ac.uir.gestionStage.DTO.NiveauDto;
-import ma.ac.uir.gestionStage.DTO.ProfesseurDto;
 import ma.ac.uir.gestionStage.DTO.ResponsableStageDto;
-import ma.ac.uir.gestionStage.Entities.Professeur;
 import ma.ac.uir.gestionStage.Entities.ResponsableStage;
-import ma.ac.uir.gestionStage.Entities.Role;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,37 +17,34 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Data
 public class ResponsableStageService {
 
     private ResponsableStage responsableStage;
-    private Role role;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired private ResponsableStageRepository responsableStageRepository;
-    @Autowired private RoleRepository roleRepository;
+
 
     @Transactional
     public ResponsableStageDto saveRESPO(ResponsableStageDto responsableStageDto){
-        ma.ac.uir.gestionStage.Entities.ResponsableStage responsableStage = new ResponsableStage();
+
+        ResponsableStage responsableStage = new ResponsableStage();
         responsableStage.setNom(responsableStageDto.getNom());
         responsableStage.setPrenom(responsableStageDto.getPrenom());
         responsableStage.setEmail(responsableStageDto.getEmail());
         responsableStage.setPassword(responsableStageDto.getPassword());
-
-        int roleID = responsableStageDto.getIdRole();
-        Role rID = roleRepository.findRoleById(roleID);
-        if(rID != null) {
-            responsableStage.setRole(rID);
-        }
         responsableStage = responsableStageRepository.save(responsableStage);
         return modelMapper.map(responsableStage,ResponsableStageDto.class);
     }
 
+
+
     @Transactional
     public ResponsableStageDto updateResponsableStage(ResponsableStageDto responsableStageDto, int id) throws EntityNotFoundException {            //UPDATE
 
-        Optional<ResponsableStage> compteOptional = Optional.ofNullable(responsableStageRepository.findResponsableStageById(id));
-        if (compteOptional != null) {
+        Optional<ResponsableStage> respoOptional = Optional.ofNullable(responsableStageRepository.findResponsableStageById(id));
+        if (respoOptional.isPresent()) {
             ResponsableStage responsableStage = modelMapper.map(responsableStageDto, ResponsableStage.class);
             responsableStage.setId(id);
             ResponsableStage updated = responsableStageRepository.save(responsableStage);
@@ -64,16 +57,21 @@ public class ResponsableStageService {
 
     @Transactional
     public ResponsableStageDto findResponsableStageById(int id) {
-        ResponsableStage responsableStage = responsableStageRepository.findResponsableStageById(id);
-        System.out.println("responsableStage: " + responsableStage);
+        ResponsableStage responsableStage = responsableStageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Responsable introuvable !!"));;
         return modelMapper.map(responsableStage, ResponsableStageDto.class);
     }
 
     @Transactional
     public List<ResponsableStageDto> findAllResponsableStages(){
-        return responsableStageRepository.findAll()
-                .stream().map(element -> modelMapper.map(element, ResponsableStageDto.class))
-                .collect(Collectors.toList());
+
+        List<ResponsableStage> responsableStage= responsableStageRepository.findAll();
+         if(responsableStage.isEmpty()){
+             throw new EntityNotFoundException();
+         }else {
+             return responsableStageRepository.findAll()
+                     .stream().map(element -> modelMapper.map(element, ResponsableStageDto.class))
+                     .collect(Collectors.toList());
+         }
     }
 
     @Transactional
@@ -102,10 +100,9 @@ public class ResponsableStageService {
     @Transactional
     public ResponsableStageDto RespoLogin(String email, String password){
         ResponsableStageDto responsableStageDto = new ResponsableStageDto();
-        int idR = responsableStageDto.getIdRole();
         if(email != null && password !=null)
             responsableStage = responsableStageRepository.findByEmailAndPassword(email,password);
-        return modelMapper.map((Object) responsableStage, (Type) EtudiantDto.class);
+        return modelMapper.map((Object) responsableStage, (Type) ResponsableStageDto.class);
 
     }
 

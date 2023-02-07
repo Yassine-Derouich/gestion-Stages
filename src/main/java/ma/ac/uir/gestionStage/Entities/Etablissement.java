@@ -1,18 +1,24 @@
 package ma.ac.uir.gestionStage.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "etablissment")
+@Table(name = "etablissement")
 @Data
-public class Etablissement {
+public class Etablissement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name= "idEtablissement")
-    private Integer idEtablissement;
+    private int idEtablissement;
 
     @Column(name = "nom")
     private String nom;
@@ -20,7 +26,9 @@ public class Etablissement {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "responsable_id",nullable = false)
+    @ToString.Exclude
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "responsable_id", unique = true, nullable = true)
+    //@JsonBackReference
     private ResponsableStage responsableStage;
 }

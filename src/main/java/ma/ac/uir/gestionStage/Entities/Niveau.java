@@ -1,12 +1,12 @@
 package ma.ac.uir.gestionStage.Entities;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
-@Data
-@Table(name = "niveau")
 @Entity
+@Table(name = "niveau")
 public class Niveau {
 
     @Id
@@ -14,33 +14,40 @@ public class Niveau {
     @Column( name= "idNiveau")
     private Integer idNiveau;
 
-    @Column( name= "nomFiliere")
+    @Column( name= "nomFiliere", unique = true)
     private String nomFiliere;
 
-    @Column( name= "niveau")
-    private String niveau;
+    @Column( name= "NBniveau")
+    private String NBniveau;
 
+    public Niveau() {
+    }
+    public Niveau(Integer idNiveau, String nomFiliere, String NBniveau) {
+        this.idNiveau = idNiveau;
+        this.nomFiliere = nomFiliere;
+        this.NBniveau = NBniveau;
+    }
     public Integer getIdNiveau() {
         return idNiveau;
     }
-
     public void setIdNiveau(Integer idNiveau) {
         this.idNiveau = idNiveau;
     }
-
     public String getNomFiliere() {
         return nomFiliere;
     }
-
     public void setNomFiliere(String nomFiliere) {
         this.nomFiliere = nomFiliere;
     }
-
-    public String getNiveau() {
-        return niveau;
+    public String getNBniveau() {
+        return NBniveau;
+    }
+    public void setNBniveau(String NBniveau) {
+        this.NBniveau = NBniveau;
     }
 
-    public void setNiveau(String niveau) {
-        this.niveau = niveau;
-    }
+  /*  @ToString.Exclude
+    @OneToOne(mappedBy = "niveau", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST,CascadeType.MERGE}, orphanRemoval = true)
+    private Etudiant etudiant;*/
 }
