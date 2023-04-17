@@ -30,7 +30,7 @@ etc ...
 - Maven 
 <br><br>
 
-made by : [Yassine Deriouch](https://github.com/Yassine-Derouich) && [Youssef Bouichenade](https://github.com/Youssef-Yb07)</br>
+made by : [Yassine Deriouch](https://github.com/YassineDeriouch) && [Youssef Bouichenade](https://github.com/Youssef-Yb07)</br>
 
                                                                  
 ```						  Made with ❤️ and java			      			        ``` <br>
